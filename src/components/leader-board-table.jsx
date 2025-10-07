@@ -16,6 +16,20 @@ import {
 import { CustomPagination } from "./custom-pagination"
 import { useState } from "react"
 
+const dynamicSubjects= [
+  {
+    key: "physics",
+    header: "Phy",
+  },
+  {
+    key: "chemistry",
+    header: "Chem",
+  },
+  {
+    key: "mathematics",
+    header: "Maths",
+  },
+]
 
 const columns = [
   {
@@ -54,18 +68,14 @@ const columns = [
       )
     }
   },
-  {
-    accessorKey: "physics",
-    header: "Phy",
-  },
-  {
-    accessorKey: "chemistry",
-    header: "Chem",
-  },
-  {
-    accessorKey: "mathematics",
-    header: "Maths",
-  },
+  ...dynamicSubjects.map((subject) => ({
+    accessorKey: subject.key,
+    header: subject.header,   
+    cell: ({ row }) => {
+      const score = row.getValue(subject.key);    
+      return (<>{score}</>)
+    }
+  })),
   {
     accessorKey: "accuracy",
     header: "Accuracy",
