@@ -13,8 +13,8 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { CustomPagination } from "./custom-pagination"
-import { useState } from "react"
+import  CustomPagination  from "./custom-pagination"
+import React,{ useState } from "react"
 
 const dynamicSubjects= [
   {
@@ -84,6 +84,7 @@ const columns = [
 ]
 
 const LeaderBoardTable = ({ data = [], refId, onPageScroll }) => {
+  console.log("Rendering LeaderBoardTable");
   const personalScore = data.length === 1
   const [pagination, setPagination] = useState({
     pageIndex: 0,
@@ -159,4 +160,4 @@ const LeaderBoardTable = ({ data = [], refId, onPageScroll }) => {
   )
 }
 
-export default LeaderBoardTable
+export default React.memo(LeaderBoardTable);

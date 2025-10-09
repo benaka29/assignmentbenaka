@@ -1,9 +1,10 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect,useMemo, useRef, useState } from 'react'
 import ActionBar from "@/components/action-bar";
 import LeaderBoardCard from "@/components/leader-board-card";
 import LeaderBoardTable from '@/components/leader-board-table';
 import { transformResults } from '@/lib/utils';
 import useDeviceType from '@/lib/useDeviceType';
+
 
 const API = 'https://api.quizrr.in/api/hiring/leaderboard?page=1&limit=100'
 
@@ -22,7 +23,8 @@ export default function Home() {
   const onScroll2 = () => {
     refId1.current.scrollLeft = refId2.current.scrollLeft;
   }
-
+  
+  
   useEffect(() => {
     let mounted = true
     setLoading(true)
@@ -52,12 +54,12 @@ export default function Home() {
     window.addEventListener('scroll', onScroll, { passive: true })
     onScroll()
     return () => window.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [window.scrollY])
 
   const userIndex = 75;
   const userRank = data[userIndex]?.rank ?? null;
-  const transformedData = transformResults(data, userRank);
-  const deviceBasedData = deviceType === 'desktop' ? transformedData.filter((item, id) => item.rank !== 1 && item.rank !== 2 && item.rank !== 3 && id !== userIndex) : transformedData.filter((item, id) => id !== userIndex)
+  const transformedData = useMemo(()=>transformResults(data, userRank), [data])
+  const deviceBasedData = useMemo(() => deviceType === 'desktop' ? transformedData.filter((item, id) => item.rank !== 1 && item.rank !== 2 && item.rank !== 3 && id !== userIndex) : transformedData.filter((item, id) => id !== userIndex), [transformedData, deviceType]) 
 
   return (
     <>

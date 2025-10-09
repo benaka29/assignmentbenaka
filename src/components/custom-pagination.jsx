@@ -6,12 +6,14 @@ import {
 } from "@/components/ui/pagination"
 import { getPaginationRange } from "@/lib/utils"
 import { Button } from "./ui/button";
+import { useMemo } from "react";
 
-export function CustomPagination({ table }) {
+
+function CustomPagination({ table }) {
 
   let totalPages = table.getPageCount().toLocaleString()
   let currentPage = table.getState().pagination.pageIndex + 1;
-  let pageNumbers = getPaginationRange(totalPages, currentPage);
+  let pageNumbers = useMemo(()=>getPaginationRange(totalPages, currentPage),[totalPages, currentPage]);
 
   return (
     <Pagination >
@@ -37,3 +39,5 @@ export function CustomPagination({ table }) {
     </Pagination>
   )
 }
+
+export default CustomPagination

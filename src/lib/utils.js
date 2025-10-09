@@ -20,7 +20,7 @@ export const transformResults = (results,userRank) => {
         const key = String(title).toLowerCase()
         subj[key] = s?.totalMarkScored ?? 0
       })
-
+    console.log('re-rendered');
       return {
         rank,
         name,
