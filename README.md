@@ -1,16 +1,42 @@
-# React + Vite
+// Debounce Implementation in react
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
 
-Currently, two official plugins are available:
+import React, { useState, useEffect } from "react";
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) (or [oxc](https://oxc.rs) when used in [rolldown-vite](https://vite.dev/guide/rolldown)) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+function App() {
+  const [search, setSearch] = useState("");
+  const [debouncedValue, setDebouncedValue] = useState(search);
 
-## React Compiler
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      setDebouncedValue(search);
+    }, 500); // delay of 500ms
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+    return () => {
+      clearTimeout(handler); 
+    };
+  }, [search]);
 
-## Expanding the ESLint configuration
+  useEffect(() => {
+    if (debouncedValue) {
+      console.log("API call for:", debouncedValue);
+      // Call your API or perform action here
+    }
+  }, [debouncedValue]);
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+  return (
+    <div style={{ padding: "20px" }}>
+      <h2>Simple Debounce Example</h2>
+      <input
+        type="text"
+        placeholder="Type something..."
+        value={search}
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <p>Search Value: {search}</p>
+      <p>Debounced Value: {debouncedValue}</p>
+    </div>
+  );
+}
+
+export default App;
